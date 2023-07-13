@@ -5,17 +5,17 @@ import '../utils/colors.dart';
 import 'StatusChip.dart';
 
 class TransactionCard extends StatelessWidget {
-  const TransactionCard({
-    super.key,
-    required this.time,
-    required this.name,
-    this.reference,
-    required this.phone,
-    required this.amount,
-    required this.isSuccessful,
-    required this.isMoMo,
-    this.isFavorite = false, required this.category
-  });
+  const TransactionCard(
+      {super.key,
+      required this.time,
+      required this.name,
+      this.reference,
+      required this.phone,
+      required this.amount,
+      required this.isSuccessful,
+      required this.isMoMo,
+      this.isFavorite = false,
+      required this.category});
 
   final String time, name, phone, amount, category;
   final String? reference;
@@ -74,7 +74,10 @@ class TransactionCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          phone,
+                          phone.replaceAllMapped(
+                              RegExp(r'^(\d{3})(\d{3})(\d{4})$'), (match) {
+                            return '${match[1]} ${match[2]} ${match[3]}';
+                          }),
                           style: const TextStyle(color: AppColors.textGray),
                         ),
                         Text(
@@ -105,19 +108,21 @@ class TransactionCard extends StatelessWidget {
                 width: 8,
               ),
               Text(category),
-              if (reference != null) Container(
-                height: 4,
-                width: 4,
-                margin: const EdgeInsets.symmetric(horizontal: 8),
-                decoration: BoxDecoration(
-                    color: AppColors.backgroundGray,
-                    borderRadius: BorderRadius.circular(10)),
-              ),
+              if (reference != null)
+                Container(
+                  height: 4,
+                  width: 4,
+                  margin: const EdgeInsets.symmetric(horizontal: 8),
+                  decoration: BoxDecoration(
+                      color: AppColors.backgroundGray,
+                      borderRadius: BorderRadius.circular(10)),
+                ),
               if (reference != null) Expanded(child: Text(reference!)),
-              if (isFavorite) Container(
-                margin: const EdgeInsets.only(left: 8.0),
-                child: SvgPicture.asset('assets/icons/Star.svg'),
-              ),
+              if (isFavorite)
+                Container(
+                  margin: const EdgeInsets.only(left: 8.0),
+                  child: SvgPicture.asset('assets/icons/Star.svg'),
+                ),
             ],
           )
         ],
