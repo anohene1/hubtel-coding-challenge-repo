@@ -17,6 +17,7 @@ class HistoryScreen extends StatefulWidget {
 }
 
 class _HistoryScreenState extends State<HistoryScreen> {
+  // Current selected tab index for the CupertinoSlidingSegmentedControl
   int _selectedTabIndex = 0;
   bool _isLoading = true;
 
@@ -24,6 +25,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   void initState() {
     super.initState();
 
+    // Simulate a delay to show loading indicator
     Future.delayed(const Duration(seconds: 2), () {
       setState(() {
         _isLoading = false;
@@ -34,6 +36,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // Add a custom app bar
       appBar: PreferredSize(
         preferredSize: const Size(double.maxFinite, 100),
         child: SafeArea(
@@ -49,51 +52,57 @@ class _HistoryScreenState extends State<HistoryScreen> {
               ],
             ),
             padding: const EdgeInsets.all(18.0),
+            // Cupertino segmented control for tab switching
             child: CupertinoSlidingSegmentedControl(
-                groupValue: _selectedTabIndex,
-                backgroundColor: AppColors.backgroundGray,
-                onValueChanged: (value) {
-                  setState(() {
-                    _selectedTabIndex = value!;
-                  });
-                },
-                children: {
-                  0: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: Text(
-                      'History',
-                      style: TextStyle(
-                          fontWeight: _selectedTabIndex == 0
-                              ? FontWeight.w800
-                              : FontWeight.w400,
-                          color: _selectedTabIndex == 0
-                              ? Colors.black
-                              : Colors.black.withOpacity(0.2)),
+              groupValue: _selectedTabIndex,
+              backgroundColor: AppColors.backgroundGray,
+              onValueChanged: (value) {
+                setState(() {
+                  _selectedTabIndex = value!;
+                });
+              },
+              children: {
+                0: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: Text(
+                    'History',
+                    style: TextStyle(
+                      fontWeight: _selectedTabIndex == 0
+                          ? FontWeight.w800
+                          : FontWeight.w400,
+                      color: _selectedTabIndex == 0
+                          ? Colors.black
+                          : Colors.black.withOpacity(0.2),
                     ),
                   ),
-                  1: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    child: Text(
-                      'Transaction Summary',
-                      style: TextStyle(
-                          fontWeight: _selectedTabIndex == 1
-                              ? FontWeight.w800
-                              : FontWeight.w400,
-                          color: _selectedTabIndex == 1
-                              ? Colors.black
-                              : Colors.black.withOpacity(0.2)),
+                ),
+                1: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: Text(
+                    'Transaction Summary',
+                    style: TextStyle(
+                      fontWeight: _selectedTabIndex == 1
+                          ? FontWeight.w800
+                          : FontWeight.w400,
+                      color: _selectedTabIndex == 1
+                          ? Colors.black
+                          : Colors.black.withOpacity(0.2),
                     ),
                   ),
-                }),
+                ),
+              },
+            ),
           ),
         ),
       ),
+      // Position FAB at the center
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FilledButton(
         onPressed: () {},
         style: ButtonStyle(
           shape: WidgetStateProperty.all(
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(6))),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+          ),
           backgroundColor: WidgetStateProperty.all(AppColors.teal),
           padding: WidgetStateProperty.all(
             const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
@@ -117,21 +126,23 @@ class _HistoryScreenState extends State<HistoryScreen> {
             SizedBox(
               width: 8,
             ),
-            Text(
-              'SEND NEW',
-            )
+            Text('SEND NEW'),
           ],
         ),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 18.0),
         child: _isLoading
+            // Show loading spinner if loading
             ? const Center(child: CircularProgressIndicator())
+            // If loading is done, display the list of transactions
             : ListView.builder(
                 padding: const EdgeInsets.only(bottom: 80, top: 18),
+                // +1 for the search bar
                 itemCount: transactionsData.length + 1,
                 itemBuilder: (context, index) {
                   if (index == 0) {
+                    // Display search bar at the top
                     return Flex(
                       direction: Axis.horizontal,
                       children: [
@@ -155,9 +166,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      DateChip(
-                        label: transactions.date,
-                      ),
+                      // Display a chip with the transaction date
+                      DateChip(label: transactions.date),
+                      // Loop through transactions and display a transaction card for each transaction
                       ...transactions.transactions.map(
                         (transaction) {
                           return TransactionCard(transaction: transaction);

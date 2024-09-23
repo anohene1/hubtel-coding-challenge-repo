@@ -6,10 +6,7 @@ import 'package:hubtel/model/transaction.dart';
 import 'StatusChip.dart';
 
 class TransactionCard extends StatelessWidget {
-  const TransactionCard(
-      {super.key,
-        required this.transaction
-      });
+  const TransactionCard({super.key, required this.transaction});
 
   final Transaction transaction;
 
@@ -36,6 +33,7 @@ class TransactionCard extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 25,
+                // If it's a momo transaction, use the momo icon, else use the absa icon
                 child: Image.asset(
                     'assets/images/${transaction.isMoMo ? 'momo.png' : 'absa.png'}'),
               ),
@@ -66,11 +64,18 @@ class TransactionCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
+                          // Format the phone number by replacing the pattern (first 3, middle 3, last 4 digits)
                           transaction.phone.replaceAllMapped(
-                              RegExp(r'^(\d{3})(\d{3})(\d{4})$'), (match) {
-                            return '${match[1]} ${match[2]} ${match[3]}';
-                          }),
-                          style: const TextStyle(color: AppColors.textGray),
+                            RegExp(
+                                r'^(\d{3})(\d{3})(\d{4})$'), // Regex to match the phone number format (e.g., 1234567890)
+                            (match) {
+                              // Reformat the number by inserting spaces between each group
+                              return '${match[1]} ${match[2]} ${match[3]}'; // e.g., "123 456 7890"
+                            },
+                          ),
+                          style: const TextStyle(
+                            color: AppColors.textGray,
+                          ), // Apply custom text color from AppColors
                         ),
                         Text(
                           transaction.amount,

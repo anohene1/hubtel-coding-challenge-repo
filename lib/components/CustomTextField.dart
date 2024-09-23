@@ -14,17 +14,18 @@ class CustomTextField extends StatelessWidget {
         hintText: 'Search',
         fillColor: AppColors.backgroundGray,
         filled: true,
-        contentPadding:
-        const EdgeInsets.symmetric(vertical: 14),
+        contentPadding: const EdgeInsets.symmetric(vertical: 14),
         hintStyle: const TextStyle(
-            color: AppColors.textGray),
+          color: AppColors.textGray,
+        ),
         prefixIcon: SvgPicture.asset(
           'assets/icons/Search.svg',
           fit: BoxFit.none,
         ),
         border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide.none),
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide.none,
+        ),
       ),
     );
   }
